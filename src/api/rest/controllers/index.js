@@ -36,8 +36,7 @@ class Request implements IRequest {
   }
 
   async process() {
-    const responseA = await this.methodA()
-    const responseB = await await this.methodB()
+    const [responseA, responseB] = await Promise.all([this.methodA(), this.methodB()])
 
     return {
       dataA: responseA,
