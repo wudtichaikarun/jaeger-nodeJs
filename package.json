@@ -1,24 +1,40 @@
 {
-  "name": "js-es6-init",
+  "name": "jaeger-nodejs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "flow && DEBUG=koa*,worker,app*  nodemon src/index.js --exec babel-node -e js",
+    "dev": "flow && DEBUG=koa*,worker,app*  nodemon src/bootstrap.js --exec babel-node -e js",
     "flow": "flow"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ramda": "^0.27.0"
+    "@koa/cors": "^3.1.0",
+    "axios": "^0.19.2",
+    "class-validator": "^0.12.2",
+    "dotenv": "^8.2.0",
+    "hpropagate": "0.0.7",
+    "jaeger-client-utility": "^1.0.1",
+    "koa": "^2.12.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-compress": "^4.0.1",
+    "koa-router": "^9.0.1",
+    "opentracing": "^0.14.4",
+    "ramda": "^0.27.0",
+    "routing-controllers": "^0.9.0-alpha.3",
+    "typedi": "^0.8.0",
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
+    "class-transformer": "^0.2.3",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
