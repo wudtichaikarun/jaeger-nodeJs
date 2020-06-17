@@ -1,9 +1,10 @@
 // @flow
+import path from 'path'
 import koaCors from '@koa/cors'
 import koa from 'koa'
 import koaBodyParser from 'koa-bodyparser'
 import koaCompress from 'koa-compress'
-import { Action, RoutingControllersOptions, useContainer, useKoaServer } from 'routing-controllers'
+import { load } from '@spksoft/koa-decorator'
 import { logger, ILogger } from '../../libraries/logger/logger'
 import { pathNotFoundHandler } from '../../middlewares/pathNotFoundHandler'
 import { loggingMiddleware } from '../../middlewares/logging'
@@ -37,13 +38,9 @@ export class RestApiServer {
     this.app.use(koaCompress())
     this.app.use(loggingMiddleware({ logger: this.logger }))
 
-    const routerControllerOptions: RoutingControllersOptions = {
-      defaultErrorHandler: false,
-      controllers: [__dirname + '/controllers/**/!(*.test.*)'], // load any files excluding test files
-    }
-
     // business logic endpoints
-    useKoaServer(this.app, routerControllerOptions)
+    const apiRouter = load(path.resolve(__dirname, 'controllers'), '.controller.js')
+    this.app.use(apiRouter.routes())
 
     this.app.use(pathNotFoundHandler)
   }

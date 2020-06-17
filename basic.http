@@ -1,0 +1,9 @@
+POST http://localhost:3000/v1/demos
+Content-Type: application/json
+
+{
+	"name": "romantic1",
+	"author": "ro1",
+	"authorEmail": "romantic@ro1.com",
+    "presentDate": "{{$datetime iso8601}}"
+}

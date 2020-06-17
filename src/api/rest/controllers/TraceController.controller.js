@@ -1,13 +1,11 @@
-import { Controller, Get, UseBefore } from 'routing-controllers'
-import { Context } from 'koa'
+import { HttpMethod, route, load } from '@spksoft/koa-decorator'
 import { enableTracing } from '../../../bootstrapRestApi'
 import { request } from './index'
 
-@Controller('/trace')
-@UseBefore(enableTracing)
+@route('/trace')
 export class TraceController {
-  @Get()
-  async trace(ctx: Context) {
+  @route('/', HttpMethod.GET, enableTracing)
+  async trace(ctx) {
     const response = await request.process()
     return response
   }
