@@ -1,10 +1,11 @@
 // @flow
 import 'dotenv/config'
 import tracer from 'jaeger-client'
-import { ITracingInfo } from './librariers/tracing/interface'
-import { TraceUtil } from './librariers/tracing/traceUtil'
+import { ITracingInfo } from './libraries/tracing/interface'
+import { TraceUtil } from './libraries/tracing/traceUtil'
 import { config } from './bootstrapConfig'
 import { ensureConfigKeys } from './utils/configUtil'
+import { logger } from './libraries/logger/logger'
 
 const hpropagate = require('hpropagate')
 const hpropagateTracer = require('hpropagate/lib/tracer')
@@ -26,7 +27,7 @@ const headersToPropagate = [
 
 hpropagate({
   headersToPropagate,
-  //   setAndPropagateCorrelationId: true, // disable auto generate key
+  // setAndPropagateCorrelationId: false, // disable auto generate key
 })
 
 const tracingConfig: tracer.TracingConfig = {
@@ -40,18 +41,9 @@ const tracingConfig: tracer.TracingConfig = {
   },
 }
 
-var DEFAULT_OPTIONS = {
-  logger: {
-    info: function info(msg) {
-      console.log('INFO : ', msg)
-    },
-    error: function error(msg) {
-      console.log('ERROR : ', msg)
-    },
-  },
-}
-
-const globalTracer = tracer.initTracerFromEnv(tracingConfig, DEFAULT_OPTIONS)
+const globalTracer = tracer.initTracerFromEnv(tracingConfig, {
+  logger,
+})
 
 const tracingInfo: ITracingInfo = {
   headersToPropagate,

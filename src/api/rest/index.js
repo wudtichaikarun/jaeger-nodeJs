@@ -4,7 +4,9 @@ import koa from 'koa'
 import koaBodyParser from 'koa-bodyparser'
 import koaCompress from 'koa-compress'
 import { Action, RoutingControllersOptions, useContainer, useKoaServer } from 'routing-controllers'
+import { logger, ILogger } from '../../libraries/logger/logger'
 import { pathNotFoundHandler } from '../../middlewares/pathNotFoundHandler'
+import { loggingMiddleware } from '../../middlewares/logging'
 
 export interface IRestApiServer {
   port?: number;
@@ -20,17 +22,20 @@ export class RestApiServer {
   port: number
   hostname: string
   options: IRestApiServer
+  logger: ILogger
 
   constructor(options: IRestApiServer) {
     this.hostname = options.hostname || '0.0.0.0'
     this.port = options.port || 8080
     this.options = options
+    this.logger = logger
 
     this.app = new koa()
 
     this.app.use(koaCors())
     this.app.use(koaBodyParser())
     this.app.use(koaCompress())
+    this.app.use(loggingMiddleware({ logger: this.logger }))
 
     const routerControllerOptions: RoutingControllersOptions = {
       defaultErrorHandler: false,
