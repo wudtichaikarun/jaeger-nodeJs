@@ -20,6 +20,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-compress": "^4.0.1",
     "koa-router": "^9.0.1",
+    "mongoose": "^5.9.19",
     "opentracing": "^0.14.4",
     "ramda": "^0.27.0",
     "routing-controllers": "^0.9.0-alpha.3",
