@@ -3,6 +3,8 @@ import 'dotenv/config'
 import tracer from 'jaeger-client'
 import { ITracingInfo } from './librariers/tracing/interface'
 import { TraceUtil } from './librariers/tracing/traceUtil'
+import { config } from './bootstrapConfig'
+import { ensureConfigKeys } from './utils/configUtil'
 
 const hpropagate = require('hpropagate')
 const hpropagateTracer = require('hpropagate/lib/tracer')
@@ -58,5 +60,7 @@ const tracingInfo: ITracingInfo = {
   localTracer: hpropagateTracer,
   localTracingKey: 'x-correlation-id',
 }
+
+ensureConfigKeys(config, 'JAEGER_AGENT_HOST', 'JAEGER_AGENT_PORT')
 
 export const traceUtil = new TraceUtil(tracingInfo)
