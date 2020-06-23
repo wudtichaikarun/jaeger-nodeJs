@@ -3,6 +3,8 @@ import { traceUtil } from '../../../bootstrapTracer'
 const Module = require('module')
 const hooks = require('async-hooks')
 
+console.log(Object.getOwnPropertyNames(Module))
+
 const load = Module._load
 Module._load = function (request, parent) {
   const mod = load.apply(this, arguments)
