@@ -40,4 +40,5 @@ export class Request implements IRequest {
   }
 }
 
-export const request = new Request()
+const tracerDomain = new Request()
+export default tracerDomain
