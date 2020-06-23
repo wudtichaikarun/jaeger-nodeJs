@@ -5,9 +5,7 @@ const hooks = require('async-hooks')
 
 const load = Module._load
 Module._load = function (request, parent) {
-  const mod = load.apply(this, arguments) // load the module with the original method
-  // const isNodeModules = parent.path.split('/').includes('node_modules')
-  // const isDomainModules = parent.path.split('/').includes('domains')
+  const mod = load.apply(this, arguments)
   const isLocalRequest = request === '../../../domains/tracer/tracer'
 
   if (isLocalRequest) {
@@ -18,24 +16,21 @@ Module._load = function (request, parent) {
       (prop) => prop != 'constructor',
     )
 
+    console.log('methodsNames', methodsNames)
+
     methodsNames.forEach((methodName) => {
+      let span
+
       mod.default.will(methodName, () => {
-        console.log('will...', methodName)
+        span = traceUtil.startSpan(`${methodName}`, { currentSpan: traceUtil.getCurrentSpan() })
       })
 
       mod.default.did(methodName, (resp) => {
-        console.log('did...', methodName)
-
+        span && span.finish()
         return resp
       })
     })
-
-    // https://blog.sqreen.com/building-a-dynamic-instrumentation-agent-for-node-js/
-    // console.log('instanceOnly', instanceOnly)
-    // console.log('------------------')
   }
 
   return mod
 }
-
-require('../../../domains/tracer/tracer')
