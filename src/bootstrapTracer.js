@@ -1,11 +1,13 @@
 // @flow
 import 'dotenv/config'
 import tracer from 'jaeger-client'
+import { Span } from 'opentracing'
 import { ITracingInfo } from './libraries/tracing/interface'
 import { TraceUtil } from './libraries/tracing/traceUtil'
 import { config } from './bootstrapConfig'
 import { ensureConfigKeys } from './utils/configUtil'
 import { logger } from './libraries/logger/logger'
+import './libraries/tracing/instruments/function'
 
 const hpropagate = require('hpropagate')
 const hpropagateTracer = require('hpropagate/lib/tracer')

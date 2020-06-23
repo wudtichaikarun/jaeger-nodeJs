@@ -2,8 +2,6 @@
 import R from 'ramda'
 import * as uuid from 'uuid'
 import axios from 'axios'
-import { traceUtil } from '../../../bootstrapTracer'
-import { withTrace } from '../../../libraries/tracing/instruments/withTrace'
 
 interface IRequest {
   methodA(): Promise<void>;
@@ -43,4 +41,3 @@ export class Request implements IRequest {
 }
 
 export const request = new Request()
-export const requestWithTrace = withTrace(request, ['methodA', 'methodB'])
