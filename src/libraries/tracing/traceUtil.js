@@ -108,17 +108,6 @@ export class TraceUtil {
     return undefined
   }
 
-  startNewLocalTracer(type: string, contextValues: { [key: string]: string } = {}) {
-    const newLocalTracer = this.localTracer.newTrace(type)
-
-    newLocalTracer.context = new Map(Object.entries(contextValues))
-
-    const localTracingId = newLocalTracer.context.get(this.getLocalTracingKey()) || uuid.v4()
-    newLocalTracer.context.set(this.getLocalTracingKey(), localTracingId)
-
-    return newLocalTracer
-  }
-
   extractPropagatingValues(headers: any) {
     const values: { [key: string]: string } = {}
 
@@ -163,6 +152,10 @@ export class TraceUtil {
     const { currentSpan, tags, logs } = options
 
     const span = this.globalTracer.startSpan(name, { childOf: currentSpan })
+
+    if (!currentSpan) {
+      this.setCurrentSpan(span)
+    }
 
     const localTracingId = this.getLocalTracingId()
     // console.log('localTracingId', localTracingId)

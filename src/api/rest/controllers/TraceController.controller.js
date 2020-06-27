@@ -1,12 +1,12 @@
-import { HttpMethod, route, load } from '@spksoft/koa-decorator'
+import { HttpMethod, route } from '@spksoft/koa-decorator'
 import { enableTracing } from '../../../bootstrapRestApi'
-import { request } from '../../../domains/tracer/index'
+import tracerDomain from '../../../domains/tracer/tracer'
 
 @route('/trace')
 export class TraceController {
-  @route('/', HttpMethod.GET, enableTracing)
-  async trace(ctx) {
-    const response = await request.process()
+  @route('/', HttpMethod.GET)
+  async tracing(ctx) {
+    const response = await tracerDomain.process()
     return response
   }
 }

@@ -1,56 +1,38 @@
-import { Span } from 'opentracing'
-import { traceUtil } from '../../../bootstrapTracer'
-const Formatter = require('njstrace/lib/formatter.js')
+// import { Span } from 'opentracing'
+// import { traceUtil } from '../../../bootstrapTracer'
+// const Module = require('module')
+// const hooks = require('async-hooks')
 
-class MyFormatter {
-  span: Span
+// console.log(Object.getOwnPropertyNames(Module))
 
-  /**
-   This method is called whenever a traced function is being called, the method gets a single args object with the following
-    - name {string} - The traced function name
-    - file {string} - The traced file
-    - line {number} - The traced function line number
-    - args {object} - The function arguments object
-    - stack {Tracer.CallStack} - The current call stack including the current traced function (see Tracer.CallStack below)
-  */
-  onEntry(args) {
-    const isModuleFromDomain = args.file.split('/').includes('domains')
-    const [methodName] = args.name.match(/_callee|Anonymous|step/g) || ''
+// const load = Module._load
+// Module._load = function (request, parent) {
+//   const mod = load.apply(this, arguments)
+//   const isLocalRequest = request === '../../../domains/tracer/tracer'
 
-    if (isModuleFromDomain && !methodName) {
-      this.span = traceUtil.startSpan(`${args.name}`, { currentSpan: traceUtil.getCurrentSpan() })
-      console.log(`Got call from : ${args.name}`)
-    }
-  }
+//   if (isLocalRequest) {
+//     hooks(mod.default)
+//     console.log(mod)
 
-  /**
-    This method is called whenever a traced function returns, the method gets a single args object with the following:
-    - name {string} - The traced function name
-    - file {string} - The traced file
-    - line {number} - The traced function line number
-    - retLine {number} - The line number where the exit is (can be either a return statement of function end)
-    - stack {Tracer.CallStack} - The current call stack AFTER popping the current traced function (see Tracer.CallStack below)
-    - span {number} - The execution time span (milliseconds) of the traced function
-    - exception {boolean} - Whether this exit is due to exception
-    - returnValue {*|null} - The function return value
-   */
-  onExit(args) {
-    const isModuleFromDomain = args.file.split('/').includes('domains')
-    const [methodName] = args.name.match(/_callee|Anonymous|step/g) || ''
+//     const methodsNames = Object.getOwnPropertyNames(mod.default.__proto__).filter(
+//       (prop) => prop != 'constructor',
+//     )
 
-    if (isModuleFromDomain && !methodName) {
-      console.log(`Exit from : ${args.name}`)
-      this.span.finish()
-    }
-  }
-}
+//     console.log('methodsNames', methodsNames)
 
-// But must "inherit" from Formatter
-require('util').inherits(MyFormatter, Formatter)
+//     methodsNames.forEach((methodName) => {
+//       let span
 
-export default require('njstrace').inject({
-  formatter: new MyFormatter(),
-  files: ['**/*.js', '!**/node_modules/**'],
-})
+//       mod.default.will(methodName, () => {
+//         span = traceUtil.startSpan(`${methodName}`, { currentSpan: traceUtil.getCurrentSpan() })
+//       })
 
-require('../../../domains/tracer/index')
+//       mod.default.did(methodName, (resp) => {
+//         span && span.finish()
+//         return resp
+//       })
+//     })
+//   }
+
+//   return mod
+// }
