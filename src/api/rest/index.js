@@ -42,7 +42,7 @@ export class RestApiServer {
     const apiRouter = load(path.resolve(__dirname, 'controllers'), '.controller.js')
     this.app.use(apiRouter.routes())
 
-    this.app.use(pathNotFoundHandler)
+    // this.app.use(pathNotFoundHandler)
   }
 
   start = () => {

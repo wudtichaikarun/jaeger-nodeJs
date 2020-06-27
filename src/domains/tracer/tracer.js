@@ -2,6 +2,7 @@
 import R from 'ramda'
 import * as uuid from 'uuid'
 import axios from 'axios'
+import { Tracing } from '../../libraries/tracing/instruments/decorators'
 
 interface IRequest {
   methodA(): Promise<void>;
@@ -9,6 +10,7 @@ interface IRequest {
   process(): Promise<any>;
 }
 
+@Tracing
 export class Request implements IRequest {
   async methodA() {
     const valueA = await axios.request({
