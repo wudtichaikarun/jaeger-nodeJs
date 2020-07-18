@@ -2,10 +2,11 @@
 
 ## instruments
 
-- HTTP
-- Mongoose
-- Amqp
-- Kafka
+- [x] HTTP
+- [x] class method decorator
+- [ ] Mongoose
+- [ ] Amqp
+- [ ] Kafka
 
 ---
 
