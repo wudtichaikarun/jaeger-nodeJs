@@ -12,7 +12,7 @@ export class TraceController {
     return response
   }
 
-  @route('/amqp', HttpMethod.GET)
+  @route('/amqp', HttpMethod.GET, enableTracing)
   async tracingAmqp(ctx) {
     let publish = false
 

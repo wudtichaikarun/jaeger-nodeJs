@@ -8,6 +8,7 @@ import { config } from './bootstrapConfig'
 import { ensureConfigKeys } from './utils/configUtil'
 import { logger } from './libraries/logger/logger'
 import './libraries/tracing/instruments/function'
+// import './libraries/tracing/instruments/rascal'
 
 const hpropagate = require('hpropagate')
 const hpropagateTracer = require('hpropagate/lib/tracer')
