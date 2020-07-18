@@ -13,7 +13,7 @@ async function bootstrapAmqp() {
       password: config.amqp.AMQP_PASSWORD,
     }
 
-    createAmqpConnection(options)
+    await createAmqpConnection(options)
 
     logger.info({ event: 'bootstrapAmqp' })
   } catch (error) {
