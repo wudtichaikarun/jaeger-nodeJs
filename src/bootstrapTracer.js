@@ -33,7 +33,6 @@ hpropagate({
 })
 
 const tracingConfig: tracer.TracingConfig = {
-  serviceName: 'tracing-test',
   sampler: {
     type: 'const',
     param: 1,

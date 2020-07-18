@@ -21,7 +21,5 @@ try {
     restApiServer.start()
   }
 } catch (error) {
-  console.error(error, { event: 'bootstrap_restapi' })
-
   process.exit(-1)
 }

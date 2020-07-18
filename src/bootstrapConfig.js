@@ -12,4 +12,9 @@ export const config = {
     MONGO_USERNAME: process.env.MONGO_USERNAME,
     MONGO_PASSWORD: process.env.MONGO_PASSWORD,
   },
+  amqp: {
+    AMQP_URI: process.env.AMQP_URI,
+    AMQP_USERNAME: process.env.AMQP_USERNAME,
+    AMQP_PASSWORD: process.env.AMQP_PASSWORD,
+  },
 }
