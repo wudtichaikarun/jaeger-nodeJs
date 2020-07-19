@@ -14,14 +14,11 @@ export class TraceController {
 
   @route('/amqp', HttpMethod.GET, enableTracing)
   async tracingAmqp(ctx) {
-    let publish = false
-
     if (Broker) {
-      publish = true
-      const publication = await Broker.publish('demo_pub', 'Hello World!')
-      publication.on('error', console.error)
+      const publication = await Broker.publish({ queue: 'demo_pub' }, { message: 'Hello World!' })
     }
 
-    return { publish }
+    const response = await tracerDomain.process()
+    return response
   }
 }

@@ -1,9 +1,8 @@
 // @flow
 import R from 'ramda'
-import rascal from 'rascal'
-var shimmer = require('shimmer')
 import { logger } from '../logger/logger'
 import { traceUtil } from '../../bootstrapTracer'
+import { RascalBroker } from './rascalBroker'
 
 export interface IAmqpConnectionOptions {
   connectionUrl: string;
@@ -49,34 +48,12 @@ let Broker = null
 
 export async function createAmqpConnection(options: IAmqpConnectionOptions) {
   const rascalConfig = buildConfig(options)
-  logger.info(rascalConfig)
 
-  const broker = await rascal.BrokerAsPromised.create(rascalConfig)
-  broker.on('error', console.error)
+  const broker = new RascalBroker(rascalConfig, logger, traceUtil)
+  await broker.connect()
 
   Broker = broker
-  let config = {
-    options: {
-      headers: {},
-    },
-  }
-
-  shimmer.wrap(broker, 'publish', function (original) {
-    return function () {
-      traceUtil.injectTracingContext(config.options.headers)
-      const returned = original.apply(this, [...arguments, config])
-      return returned
-    }
-  })
-
-  const publication = await broker.publish('demo_pub', 'Hello World!')
-  publication.on('error', console.error)
-
-  const subscription = await broker.subscribe('demo_sub')
-  subscription.on('message', (message, content, ackOrNack) => {
-    console.dir(message, { depth: 5 })
-    ackOrNack()
-  })
+  await Promise.all([broker.subscribe({ queueName: 'demo_sub' })])
 }
 
 export { Broker }
